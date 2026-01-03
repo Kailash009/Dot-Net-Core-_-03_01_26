@@ -1,0 +1,78 @@
+DOT NET CORE:-
+-----------------------
+>> It is the new version of dot net framework [Old Version].
+>> It was released in 2016.
+>> The first version of dot net core version was 3.0.
+>> It is a cross platform [Win, Linux, Mac etc.] , open source , and fast framework. 
+>> It is used to build different kind of application - Web ,  Desktop , Mobile , AI , Machine Learning , Restful API's , Microservices and Cloud App - [docker , azure , CI/CD etc.] and many more.
+>> It has built-in DI. [Dependency Injection].
+>> It has Middleware concept.
+>> It used Roslyn [RYUJIT] Compiler.
+>> It used Kestrel [IIS , Linux , Mac] Web Server.
+>> It has built - in Containerization support.
+>> It used the concept of MVC architecture.
+-----------------------------------------------------------------------
+MVC:-
+---------
+>> It is a highly testable development framework architecture that differentiate an application into main three Layers:-
+a) Model.
+>> DAL [Data Access Layer].
+>> In it we perform all database related operations. [Properties , Connection Code.]
+----------------------------------------------------------------
+b) View.
+>> PLL [Presentation Logic Layer.]
+>> It is the UI of our Page.
+>> In it we write html, css , js, jquery , react etc.
+c) Controller.
+>> BLL [Business Logic Layer].
+>> All business or logical concept written in this layer.
+>> it is the main layer of MVC.
+>> It interact both Model and View.
+>> It is the Heart of MVC.
+----------------------------------------
+Life Cycle of Dot net core:-
+-------------------------------------- 
+How to take Dot net core Project:-
+----------------------------------------
+If you want to change your Razor View at run time in core:-
+Then you need to install one package -
+Microsoft.Aspnetcore.mvc.razor.runtimeCompilation .
+also add this package in services as given below:-
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+---------------------------------------------------------
+public class HomeController : Controller
+{
+    public IActionResult Index() // Action Method
+    {
+        return View();
+    }
+
+    public IActionResult About()
+    {
+        return View();
+    }
+
+    public string welcome()  // Non-Action Method.
+    {
+        return "Hello Dot Net Core!!!";
+    }
+    public int getMyId(int ?id)
+    { 
+        return id??100;  // Null Colescing Operator.
+    }
+-------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
