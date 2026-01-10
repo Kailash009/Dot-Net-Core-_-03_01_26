@@ -1,0 +1,394 @@
+Show multiple Employee Record:-
+----------------------------------------
+using Batch12PMCore_03_01_26.EmployeeDetails;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class EmployeeController : Controller
+    {
+        public IActionResult Index()
+        {
+            var employee = EmployeeOperation.GetEmployee();
+            return View(employee);
+        }
+        public IActionResult Details()
+        {
+            var employees= EmployeeOperation.GetEmployees();
+            return View(employees);
+        }
+    }
+}
+--------
+using Batch12PMCore_03_01_26.Models;
+
+namespace Batch12PMCore_03_01_26.EmployeeDetails
+{
+    public class EmployeeOperation
+    {
+        public static Employee GetEmployee()
+        {
+            Employee emp = new Employee
+            {
+                Eid = 101,
+                Ename = "Amar",
+                Age = 25,
+                Mobileno = "8998797911",
+                Post = "SE",
+                Salary = 56989.23
+            };
+            return emp;
+        }
+        public static List<Employee> GetEmployees()
+        { 
+            List<Employee> empList = new List<Employee>();
+            
+            Employee emp = new Employee();
+            emp.Eid = 101;
+            emp.Ename = "Rohit";
+            emp.Age = 23;
+            emp.Mobileno = "97977657001";
+            emp.Post = "SE";
+            emp.Salary = 673737.34;
+            empList.Add(emp);  // First Employee Added.
+
+            emp = new Employee();
+            emp.Eid = 102;
+            emp.Ename = "Mohit";
+            emp.Age = 26;
+            emp.Mobileno = "87977657001";
+            emp.Post = "TL";
+            emp.Salary = 773737.34;
+            empList.Add(emp);  // Second Employee Added.
+
+            emp = new Employee();
+            emp.Eid = 103;
+            emp.Ename = "Ram";
+            emp.Age = 21;
+            emp.Mobileno = "7977657001";
+            emp.Post = "Clerk";
+            emp.Salary = 53737.34;
+            empList.Add(emp);  // Third Employee Added.
+
+            emp = new Employee();
+            emp.Eid = 104;
+            emp.Ename = "Ajay";
+            emp.Age = 21;
+            emp.Mobileno = "6477657001";
+            emp.Post = "PO";
+            emp.Salary = 273737.34;
+            empList.Add(emp);  // Fourth Employee Added.
+
+            emp = new Employee();
+            emp.Eid = 105;
+            emp.Ename = "Manish";
+            emp.Age = 29;
+            emp.Mobileno = "37977657001";
+            emp.Post = "DA";
+            emp.Salary = 473737.34;
+            empList.Add(emp);  // Fifth Employee Added.
+
+            return empList;
+        }
+    }
+}
+-----------
+@model IEnumerable<Employee>
+
+<h1>Employee Details !!</h1>
+
+<table class="table table-striped">
+    <tr>
+        <th>EID</th>
+        <th>NAME</th>
+        <th>AGE</th>
+        <th>MOBILE NO.</th>
+        <th>POST</th>
+        <th>SALARY</th>
+    </tr>
+   @foreach (var emp in Model)
+    {
+        <tr>
+            <td>@emp.Eid</td>
+            <td>@emp.Ename</td>
+            <td>@emp.Age</td>
+            <td>@emp.Mobileno</td>
+            <td>@emp.Post</td>
+            <td>@emp.Salary</td>
+        </tr>
+    }
+</table>
+--------------------------------------------------------
+Complex Model:-
+----------------------
+1. School.  ---->>>> List of Teacher.
+2. Teacher. ---->>>> List of Student.
+3. Student.
+----------------------------------
+namespace Batch12PMCore_03_01_26.Models
+{
+    public class School
+    {
+        public int School_Id { get; set; }
+        public string SchoolName { get; set; }
+        public string School_City { get; set; }
+        public List<Teacher> ListofTeacher { get; set; }
+    }
+}
+------
+namespace Batch12PMCore_03_01_26.Models
+{
+    public class Teacher
+    {
+        public int Tid { get; set; }
+        public string Tname { get; set; }
+        public int Tage { get; set; }
+        public string Post { get; set; }
+        public double Tsalary { get; set; }
+        public string Timg { get; set; }
+        public List<Student> ListofStudents { get; set; }
+    }
+}
+----------
+namespace Batch12PMCore_03_01_26.Models
+{
+    public class Student
+    {
+        public int Sid { get; set; }
+        public string Sname { get; set; }
+        public int Sage { get; set; }
+        public string Class { get; set; }
+        public double SFees { get; set; }
+    }
+}
+----------------------------
+using Batch12PMCore_03_01_26.Models;
+
+namespace Batch12PMCore_03_01_26.SchoolDetails
+{
+    public class SchoolOperations
+    {
+        public static School GetSchool()
+        {
+            School sch = new School
+            {
+                School_Id = 7886681,
+                SchoolName = "Dev Bhoomi Uttrakhand!",
+                School_City = "Dehardun",
+                ListofTeacher = GetTeachers()
+            };
+            return sch;
+        }
+        public static List<Teacher> GetTeachers()
+        {
+            List<Teacher> lstTch = new List<Teacher>();
+
+            Teacher tch = new Teacher();
+            tch.Tid = 101;
+            tch.Tname = "Robin";
+            tch.Tage = 33;
+            tch.Post = "SE";
+            tch.Tsalary = 2838383.56;
+            tch.Timg = "images/a.jpg";
+            tch.ListofStudents = StudentListForTeacherA();
+            lstTch.Add(tch);
+
+            tch = new Teacher();
+            tch.Tid = 102;
+            tch.Tname = "Mariya";
+            tch.Tage = 38;
+            tch.Post = "TL";
+            tch.Tsalary = 6838383.789;
+            tch.Timg = "images/b.jpg";
+            tch.ListofStudents = StudentListForTeacherB();
+            lstTch.Add(tch);
+
+
+            tch = new Teacher();
+            tch.Tid = 103;
+            tch.Tname = "John";
+            tch.Tage = 43;
+            tch.Post = "DA";
+            tch.Tsalary = 9838383.092;
+            tch.Timg = "images/c.jpg";
+            tch.ListofStudents = StudentListForTeacherC();
+            lstTch.Add(tch);
+
+            return lstTch;
+        }
+        public static List<Student> StudentListForTeacherA()
+        {
+            List<Student> stuList = new List<Student>();
+            
+            Student stu = new Student();
+            stu.Sid = 1;
+            stu.Sname = "Rohit";
+            stu.Sage = 23;
+            stu.Class = "B.Tech";
+            stu.SFees = 123093.34;
+            stuList.Add(stu);
+
+            stu = new Student();
+            stu.Sid = 2;
+            stu.Sname = "Sonam";
+            stu.Sage = 27;
+            stu.Class = "M.Tech";
+            stu.SFees = 323093.34;
+            stuList.Add(stu);
+
+            return stuList;
+        }
+        public static List<Student> StudentListForTeacherB()
+        {
+            List<Student> stuList = new List<Student>();
+
+            Student stu = new Student();
+            stu.Sid = 3;
+            stu.Sname = "Sanket";
+            stu.Sage = 19;
+            stu.Class = "BCA";
+            stu.SFees = 473093.34;
+            stuList.Add(stu);
+
+            return stuList;
+        }
+        public static List<Student> StudentListForTeacherC()
+        {
+            List<Student> stuList = new List<Student>();
+
+            Student stu = new Student();
+            stu.Sid = 4;
+            stu.Sname = "Tina";
+            stu.Sage = 26;
+            stu.Class = "MCA";
+            stu.SFees = 903093.34;
+            stuList.Add(stu);
+
+            stu = new Student();
+            stu.Sid = 5;
+            stu.Sname = "Janvi";
+            stu.Sage = 21;
+            stu.Class = "PGDCA";
+            stu.SFees = 523093.34;
+            stuList.Add(stu);
+
+
+            stu = new Student();
+            stu.Sid = 6;
+            stu.Sname = "Raghu";
+            stu.Sage = 24;
+            stu.Class = "MBA";
+            stu.SFees = 923093.34;
+            stuList.Add(stu);
+
+            return stuList;
+        }
+    }
+}
+----------------------------------------
+using Batch12PMCore_03_01_26.SchoolDetails;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class SchoolController : Controller
+    {
+        public IActionResult Index()
+        {
+            var school = SchoolOperations.GetSchool();
+            return View(school);
+        }
+    }
+}
+---------------
+@model School
+
+<h1 class="text-center bg-dark text-white"> School Information </h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>School ID</th>
+        <th>@Model.School_Id</th>
+    </tr>
+    <tr>
+        <th>School Name</th>
+        <th>@Model.SchoolName</th>
+    </tr>
+    <tr>
+        <th>City</th>
+        <th>@Model.School_City</th>
+    </tr>
+</table>
+
+<h2 class="text-center bg-warning">List of Teachers</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Tid</th>
+        <th>TName</th>
+        <th>TAge</th>
+        <th>TPost</th>
+        <th>TSalaryh</th>
+        <th>Timg</th>
+    </tr>
+    @foreach (var tch in Model.ListofTeacher)
+    {
+        <tr>
+            <td>@tch.Tid</td>
+            <td>@tch.Tname</td>
+            <td>@tch.Tage</td>
+            <td>@tch.Post</td>
+            <td>@tch.Tsalary</td>
+            <td> <img src="@tch.Timg" alt="PIC" width="100px" height="100px" /></td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <h2 class="text-center bg-primary">List of Students</h2>
+            </td>
+        </tr>
+        <tr>
+            <th>SID</th>
+            <th>NAME</th>
+            <th>AGE</th>
+            <th>CLASS</th>
+            <th>FEES</th>
+        </tr>
+        @foreach (var stu in tch.ListofStudents)
+        {
+            <tr>
+                <td>@stu.Sid</td>
+                <td>@stu.Sname</td>
+                <td>@stu.Sage</td>
+                <td>@stu.Class</td>
+                <td>@stu.SFees</td>
+            </tr>
+        }
+    }
+</table>
+-------------------------------------------------
+Complex Model:- [Assignment Task]
+--------------------------------------------
+1. School.  ---->>>> List of Teacher.
+2. Teacher. ---->>>> List of Student.
+3. Student. ---->>>> List of Course.
+4. Course.
+----------------------------------------------------
+MiddleWare - Pending.
+------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
