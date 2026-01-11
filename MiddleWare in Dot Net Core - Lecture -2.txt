@@ -1,0 +1,268 @@
+MiddleWare in Dot Net Core :-
+----------------------------------------
+>> A middleware is a software component that assembled into http request pipeline.
+>> A middleware handles all your incoming and outgoing request into an application.
+>> A middleware is also responsible to show error of an application.
+---------------------------------------------------------------
+How to create MiddleWare:-
+---------------------------------
+a) app.Run()
+>> It run alone. [It can't run next middleware.]
+b) app.Use()
+>> It use next() , with the help of app.use() you can run your next middleware.
+----------------------------------------------------------------------------------
+Routing in Dot Net Core:-
+---------------------------------
+>> Routing is a mechanism that intercept all your incoming request map your request with your controller and their action methods.
+>> It decide the first page of your program.
+>> It decide the route which page gets executed first.
+>> you can create multiple routes accordingly.
+----------------------------------------------------------------
+Types of Routing:-
+----------------------
+a) Conventional Based Routing.
+>> It mostly used in application project.
+How to create CR:-
+--------------------------
+i) app.MapDefaultControllerRoute();  [ builder.Services.AddControllersWithViews(); ]
+ii) app.MapControllerRoute("default",
+    pattern:"{controller=Employee}/{action=Index}/{id?}"
+    );
+------------------------------------------
+Creating Multiple Routes:-
+---------------------------------
+>> At a time only one route will run.
+//app.MapControllerRoute("default",
+//    pattern:"{controller=Employee}/{action=Index}/{id?}"
+//    );
+
+//app.MapControllerRoute("default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}"
+//    );
+------------------------------------------------------------------
+b) Attribute Routing.
+>> It mostly used in API project.
+>> [Route] attribute is used to perform AR.
+>> Need to add app.MapControllers() in program.cs;
+i) Action Level.
+using Microsoft.AspNetCore.Mvc;
+
+namespace MiddlewareandRouting.Controllers
+{
+    public class EmployeeController : Controller
+    {
+        [Route("/")]
+        [Route("Employee/Index")]
+        [Route("Index")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+        [Route("About")]
+        public IActionResult About()
+        {
+            return View();
+        }
+        [Route("Contact")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        [Route("Service")]
+        public IActionResult Service()
+        {
+            return View();
+        }
+    }
+}
+
+ii) Controller Level.
+using Microsoft.AspNetCore.Mvc;
+
+namespace MiddlewareandRouting.Controllers
+{
+    [Route("Employee")]
+    public class EmployeeController : Controller
+    {
+        [Route("/")]
+        [Route("Index")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+        [Route("About")]
+        public IActionResult About()
+        {
+            return View();
+        }
+        [Route("Contact")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        [Route("Service")]
+        public IActionResult Service()
+        {
+            return View();
+        }
+    }
+}
+iii) Token Level.
+using Microsoft.AspNetCore.Mvc;
+
+namespace MiddlewareandRouting.Controllers
+{
+    [Route("[controller]/[action]")]
+    public class EmployeeController : Controller
+    {
+        [Route("~/")]
+        [Route("~/Employee")]
+        [Route("")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Contact()
+        {
+            return View();
+        }
+        public IActionResult Service()
+        {
+            return View();
+        }
+    }
+}
+--------------------------------------------------------------------
+Razor in Core:-
+--------------------
+>> @ {} symbol is used to define razor.
+>> .cshtml in which we write html coding. [C# + Html]
+>> It used to render C# code with html pages.
+Syntax:-
+--------------
+@{
+// Write your C# Code here...
+}
+ways to create razor:-
+----------------------------
+a) Single Statement.
+<h1> Razor Example in Core </h1>
+
+@{
+    string name = "Rahul Yadav";
+}
+
+<h1>@name</h1>
+b) Multiple Statement.
+<h1> Razor Example in Core </h1>
+
+@{
+    string name = "Rahul Yadav";
+    int age=23;
+    DateTime dob = DateTime.Now;
+}
+
+<h1>"Name =>> " + @name</h1>
+<h1>"Age =>> " + @age</h1>
+<h1>"DOB =>> " + @dob</h1>
+c) Conditional Statement.
+<h1> Razor Example in Core </h1>
+
+@{
+    int age = 20;
+    if(age>18)
+    {
+        <h1>Valid for Vote</h1>
+    }
+    else
+    {
+        <h1>Not Valid for Vote</h1>
+    }
+}
+@{
+    Console.WriteLine("Hello World!!");
+}
+d) Loop.
+<h1> Razor Example in Core </h1>
+
+@{
+    List<string> sports = new List<string> { "Cricket", "FootBall", "Tennis","Polo","Hockey" };
+    foreach (string res in sports)
+    {
+        <h1>@res</h1>
+    }
+}
+-------------------------------------------
+State Management in Core:-
+----------------------------------
+>> In every web application state management plays vital role.
+>> Web application follows http [Hyper Text Transfer Protocol] protocol. [ https://www.flipkart.com/ ]
+>> http is a stateless protocol.
+>> It doesn't maintain the communication between client and server then we use the concept of State Management.
+--------------------------------------------------
+a) Client Side SM.
+	i) ViewBag.  ->> Pending.
+	ii) ViewData.
+	iii) TempData.
+	iv) Cookies.
+b) Server Side SM.
+	i) Session.
+----------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
