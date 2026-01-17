@@ -1,0 +1,324 @@
+State Management in Core:-
+----------------------------------
+>> In every web application state management plays vital role.
+>> Web application follows http [Hyper Text Transfer Protocol] protocol. [ https://www.flipkart.com/ ]
+>> http is a stateless protocol.
+>> It doesn't maintain the communication between client and server then we use the concept of State Management.
+--------------------------------------------------
+a) Client Side SM.
+	i) ViewBag. 
+	ii) ViewData.
+	iii) TempData.
+	iv) Cookies.
+b) Server Side SM.
+	i) Session.
+----------------------------------------
+a) Client Side SM.
+	i) ViewBag.
+>> ViewBag is a dynamic property.
+>> It is used to transfer small amount of data from controller to view. 
+>> It doesn't require type casting for complex data type.
+>> it only shows Run-Time error. [Never show compile time error.]
+>> The life cycle of ViewBag is current http request only.
+Syntax:-
+ViewBag.Anyname/varname/KeyName = Value;
+--------------------------------------------------------------
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class StateMgtExController : Controller
+    {
+        public IActionResult Index()
+        {
+            //ViewBag.ram = "Hello ViewBag!!";  // Controller to View
+            //string[] sports = { "Cricket", "Polo", "Tennis", "Batminton", "Hockey", "Ludo" };
+            //ViewBag.spt = sports;
+            //Employee emp = new Employee
+            //{
+            //    Eid = 101,
+            //    Ename = "Rahul",
+            //    Age = 23,
+            //    Mobileno = "7686861111",
+            //    Post = "SE",
+            //    Salary = 345690.2
+            //};
+            //ViewBag.employee = emp;
+            return View();
+        }
+    }
+}
+---------
+<h1>State Management - Core </h1>
+
+@* 
+<h3> @ViewBag.ram </h3> *@
+
+@* <ul>
+    @foreach (var sp in @ViewBag.spt)
+    {
+        <li>@sp</li>
+    }
+    
+</ul> *@
+
+@* <h2>Employee Information</h2>
+@{
+    var emp = ViewBag.employee;
+}
+<h3>EID ==>>  @emp.Eid </h3>
+<h3>NAME ==>> @emp.Ename </h3>
+<h3>AGE ==>> @emp.Age </h3>
+<h3>MOBILE NO ==>> @emp.Mobileno </h3>
+<h3>POST ==>>  @emp.Post </h3>
+<h3>SALARY ==>> @emp.Salary </h3> *@
+------------
+ii) ViewData.
+>> ViewData inherits from ViewDataDictionary.
+>> It is used to transfer small amount of data from controller to view. 
+>> It require type casting for complex data type.
+>> it only shows Run-Time error. [Never show compile time error.]
+>> The life cycle of ViewData is current http request only.
+Syntax:-
+ViewData["varname/keyname"] = Value;
+--------------------------------------------------------------
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class StateMgtExController : Controller
+    {
+        public IActionResult Index()
+        {
+            //ViewData["ram"] = "Hello ViewData!!";  // Controller to View
+            //string[] sports = { "Cricket", "Polo", "Tennis", "Batminton", "Hockey", "Ludo" };
+            //ViewData["spt"] = sports;
+            Employee emp = new Employee
+            {
+                Eid = 101,
+                Ename = "Rahul",
+                Age = 23,
+                Mobileno = "7686861111",
+                Post = "SE",
+                Salary = 345690.2
+            };
+            ViewData["employee"] = emp;
+            return View();
+        }
+    }
+}
+-----------
+<h1>State Management - Core </h1>
+
+
+@* <h3> @ViewData["ram"] </h3>
+ *@
+@* <ul>
+    @foreach (var sp in (string[])@ViewData["spt"])
+    {
+        <li>@sp</li>
+    }
+    
+</ul> *@
+
+<h2>Employee Information</h2>
+@{
+    var emp = (Employee)ViewData["employee"];
+}
+<h3>EID ==>>  @emp.Eid </h3>
+<h3>NAME ==>> @emp.Ename </h3>
+<h3>AGE ==>> @emp.Age </h3>
+<h3>MOBILE NO ==>> @emp.Mobileno </h3>
+<h3>POST ==>>  @emp.Post </h3>
+<h3>SALARY ==>> @emp.Salary </h3>
+---------------------------------------------------------------
+	iii) TempData.
+>> TempData inherits from TempDataDictionary.
+>> It is used to transfer small amount of data from controller to view and controller to controller. 
+>> It require type casting for complex data type.
+>> it only shows Run-Time error. [Never show compile time error.]
+>> The life cycle of TempData is one subsequent request to another subsequent request.
+Syntax:-
+TempData["varname/keyname"] = Value;
+-------------------------------------------------------------
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class StateMgtExController : Controller
+    {
+        public IActionResult Index()
+        {
+            //TempData["ram"] = "Hello TempData!!";  // Controller to View
+            //if (TempData["ram"]!=null) 
+            //{
+            //    return RedirectToAction("Index", "School"); // Controller to Controller
+            //}
+            //string[] sports = { "Cricket", "Polo", "Tennis", "Batminton", "Hockey", "Ludo" };
+            //TempData["spt"] = sports;
+            Employee emp = new Employee
+            {
+                Eid = 101,
+                Ename = "Rahul",
+                Age = 23,
+                Mobileno = "7686861111",
+                Post = "SE",
+                Salary = 345690.2
+            };
+            TempData["employee"] = emp;
+            return View();
+        }
+    }
+}
+----------
+<h1>State Management - Core </h1>
+
+
+@* <h3>  @TempData["ram"] </h3> *@
+
+@* <ul>
+    @foreach (var sp in (string[])TempData["spt"])
+    {
+        <li>@sp</li>
+    }
+    
+</ul> *@
+
+<h2>Employee Information</h2>
+@{
+    var emp = (Employee)TempData["employee"];
+}
+<h3>EID ==>>  @emp.Eid </h3>
+<h3>NAME ==>> @emp.Ename </h3>
+<h3>AGE ==>> @emp.Age </h3>
+<h3>MOBILE NO ==>> @emp.Mobileno </h3>
+<h3>POST ==>>  @emp.Post </h3>
+<h3>SALARY ==>> @emp.Salary </h3>
+---------------------------------------------------------------
+	iv) Cookies.
+>> Cookie is used to store small amount of data at client machine.
+>> It store alphanumeric data.
+>> It store data upto 4k. [it depends upon browser to browser.]
+>> The default time of cookie is 30 Min.
+>> It capture all information about client machine.
+Types of Cookies:-
+-------------------------
+a) Non-Persistent Cookie.
+>> It store client information on a temporary basis.
+>> As soon as when you turn off your Laptop or close your browser window your cookie information automatically gets deleted from the Web Browser.
+b) Persistent Cookie.
+>> It store client information on a Permanent basis.
+>> As soon as when you turn off your Laptop or close your browser window your cookie information doesn't deleted from the Web Browser.
+>> In it , you need to set the time.
+-----------------------------------------------------------------------
+How to write Cookie.
+How to read Cookie.
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class StateMgtExController : Controller
+    {
+        public IActionResult Index()
+        {
+            //TempData["ram"] = "Hello TempData!!";  // Controller to View
+            //if (TempData["ram"]!=null) 
+            //{
+            //    return RedirectToAction("Index", "School"); // Controller to Controller
+            //}
+            //string[] sports = { "Cricket", "Polo", "Tennis", "Batminton", "Hockey", "Ludo" };
+            //TempData["spt"] = sports;
+            //Employee emp = new Employee
+            //{
+            //    Eid = 101,
+            //    Ename = "Rahul",
+            //    Age = 23,
+            //    Mobileno = "7686861111",
+            //    Post = "SE",
+            //    Salary = 345690.2
+            //};
+            //TempData["employee"] = emp;
+            return View();
+        }
+
+        public IActionResult WriteCookie()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult WriteCookie(CookieInformation cookieInformation)
+        {
+            CookieOptions cookie = new CookieOptions();
+            string name = cookieInformation.Name;
+            cookie.Expires = DateTime.Now.AddDays(6); // Persistent Cookie
+            Response.Cookies.Append("myname", name,cookie);  // Write Cookie
+            ViewBag.name = "Cookie Write SuccessFully!!";
+            return View();
+        }
+        public IActionResult ReadCookie()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ReadCookie(CookieInformation cookieInformation)
+        {
+            string mycookie = Request.Cookies["myname"].ToString(); // Read Cookie  
+            if (mycookie != null)
+            {
+                ViewBag.mycookie = mycookie;
+            }
+            else
+            {
+                ViewBag.mycookie = "Cookie not Found!!";
+            }
+            return View();
+        }
+    }
+}
+-------------
+namespace Batch12PMCore_03_01_26.Models
+{
+    public class CookieInformation
+    {
+        public string Name { get; set; }
+    }
+}
+---------------
+@model CookieInformation
+
+<h1> *** Write Cookie*** </h1>
+
+<form asp-action="WriteCookie" asp-controller="StateMgtEx">
+
+    Enter your Name: <input type="text" asp-for="Name"/>
+
+    <button type="submit"> Write Cookie </button>
+
+    <h2 style="color:greenyellow;"> @ViewBag.name</h>
+</form>
+-----------
+@model CookieInformation
+
+<h1> *** Read Cookie*** </h1>
+
+<form asp-action="ReadCookie" asp-controller="StateMgtEx">
+
+     Read My Name: <input type="text" asp-for="Name" value="@ViewBag.mycookie" />
+
+    <button type="submit"> Read Cookie </button>
+</form>
+--------------------------------------------
+b) Server Side SM.  --- Pending
+	i) Session.
+-------------------------------------------
+
+
+
+
+
