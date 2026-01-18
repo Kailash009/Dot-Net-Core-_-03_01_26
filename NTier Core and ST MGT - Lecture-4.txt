@@ -1,0 +1,336 @@
+b) Server Side SM. 
+----------------
+Session:-
+----------------
+>> It is server side Global state management protocol.
+>> It can be access throughout the whole application.
+>> you can store any type of data.
+>> The default time of session is 20 Min.
+>> The life time of session is anywhere in your application.
+------------------------------------------------------------------
+How to implement session in dot net core:-
+-------------------------------------------------
+builder.Services.AddSession(); // add session service.
+app.UseSession();  // add in middleware.
+a) How to Write Session.
+string email = "rahul@gmail.com";
+HttpContext.Session.SetString("mymail", email);  // Write Session Value.
+b) How to Read Session.
+string myemail = HttpContext.Session.GetString("mymail").ToString();
+ if (myemail != null)
+ {
+     ViewBag.email = myemail;
+ }
+<h2>My Session Value =>>  @ViewBag.email </h2>
+------------------------------------------------------------
+Life Comparison between ViewBag , ViewData , TempData :-
+--------------------------------------------------------------
+Note: In tempdata we have keep() method that hold our request from all subsequent request in http pipeline.
+--------------------------------------------------------------
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class StateMgtExController : Controller
+    {
+        public IActionResult Index()
+        {
+            ViewBag.name = "Hello ViewBag!!";
+            ViewData["nme"] = "Hello ViewData!!";
+            TempData["nm"] = "Hello TempData!!";
+            string email = "rahul@gmail.com";
+            HttpContext.Session.SetString("mymail", email);  // Write Session Value.
+
+            //TempData["ram"] = "Hello TempData!!";  // Controller to View
+            //if (TempData["ram"]!=null) 
+            //{
+            //    return RedirectToAction("Index", "School"); // Controller to Controller
+            //}
+            //string[] sports = { "Cricket", "Polo", "Tennis", "Batminton", "Hockey", "Ludo" };
+            //TempData["spt"] = sports;
+            //Employee emp = new Employee
+            //{
+            //    Eid = 101,
+            //    Ename = "Rahul",
+            //    Age = 23,
+            //    Mobileno = "7686861111",
+            //    Post = "SE",
+            //    Salary = 345690.2
+            //};
+            //TempData["employee"] = emp;
+            return View();
+        }
+        public IActionResult About()
+        {
+            string myemail = HttpContext.Session.GetString("mymail").ToString();
+            if (myemail != null)
+            {
+                ViewBag.email = myemail;
+            }
+            if(TempData["nm"]!=null)
+            {
+                TempData.Keep();
+                TempData.ToString();
+            }
+            return View();
+        }
+        public IActionResult Contact()
+        {
+            string myemail = HttpContext.Session.GetString("mymail").ToString();
+            if (myemail != null)
+            {
+                ViewBag.email = myemail;
+            }
+            if (TempData["nm"] != null)
+            {
+                TempData.Keep();
+                TempData.ToString();
+            }
+            return View();
+        }
+        public IActionResult Services()
+        {
+            string myemail = HttpContext.Session.GetString("mymail").ToString();
+            if (myemail != null)
+            {
+                ViewBag.email = myemail;
+            }
+            if (TempData["nm"] != null)
+            {
+                TempData.Keep();
+                TempData.ToString();
+            }
+            return View();
+        }
+
+        public IActionResult WriteCookie()
+        {
+            string myemail=HttpContext.Session.GetString("mymail").ToString();
+            if (myemail != null)
+            {
+                ViewBag.email = myemail;
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult WriteCookie(CookieInformation cookieInformation)
+        {
+            CookieOptions cookie = new CookieOptions();
+            string name = cookieInformation.Name;
+            cookie.Expires = DateTime.Now.AddDays(6); // Persistent Cookie
+            Response.Cookies.Append("myname", name,cookie);  // Write Cookie
+            ViewBag.name = "Cookie Write SuccessFully!!";
+            return View();
+        }
+        public IActionResult ReadCookie()
+        {
+            string myemail = HttpContext.Session.GetString("mymail").ToString();
+            if (myemail != null)
+            {
+                ViewBag.email = myemail;
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ReadCookie(CookieInformation cookieInformation)
+        {
+            string mycookie = Request.Cookies["myname"].ToString(); // Read Cookie  
+            if (mycookie != null)
+            {
+                ViewBag.mycookie = mycookie;
+            }
+            else
+            {
+                ViewBag.mycookie = "Cookie not Found!!";
+            }
+            return View();
+        }
+    }
+}
+-----------------------------------
+<h1>About Page!!</h1>
+
+
+<h1> ViewBag ==>>  @ViewBag.name </h1>
+<h1> ViewData ==>> @ViewData["nme"]   </h1>
+<h1> TempData ==>>  @TempData["nm"]  </h1>
+<h1> Session ==>>  @ViewBag.email  </h1>
+------------
+<h1>Contact Page!!</h1>
+
+
+<h1> ViewBag ==>>  @ViewBag.name </h1>
+<h1> ViewData ==>> @ViewData["nme"]   </h1>
+<h1> TempData ==>>  @TempData["nm"]  </h1>
+<h1> Session ==>>  @ViewBag.email  </h1>
+------
+<h1>Services Page!!</h1>
+
+<h1> ViewBag ==>>  @ViewBag.name </h1>
+<h1> ViewData ==>> @ViewData["nme"]   </h1>
+<h1> TempData ==>>  @TempData["nm"]  </h1>
+<h1> Session ==>>  @ViewBag.email  </h1>
+-----------------------------------------------------
+<h1>State Management - Core </h1>
+
+@* <h3>  @TempData["ram"] </h3> *@
+
+@* <ul>
+    @foreach (var sp in (string[])TempData["spt"])
+    {
+        <li>@sp</li>
+    }
+    
+</ul> *@
+
+@* <h2>Employee Information</h2>
+@{
+    var emp = (Employee)TempData["employee"];
+}
+<h3>EID ==>>  @emp.Eid </h3>
+<h3>NAME ==>> @emp.Ename </h3>
+<h3>AGE ==>> @emp.Age </h3>
+<h3>MOBILE NO ==>> @emp.Mobileno </h3>
+<h3>POST ==>>  @emp.Post </h3>
+<h3>SALARY ==>> @emp.Salary </h3>
+*@
+-----------------------------------------------------------------------
+CRUD operation in dot Net Core using N-Tier ADO.Net using SP :-
+-----------------------------------------------------------------------
+C ->> Create
+R ->> Read
+U ->> Update
+D ->> Delete
+------------------------------------------
+ADO.Net :-
+-------------
+>> Active-X data objects.
+>> Net => Network Enabled Technology.
+>> It is a bridge between frontEnd and BackEnd.
+Ado.net we have built-in classes which is useful to establish the communication between client and server.
+Assignment Read all these classes:-
+	a) SqlConnection.
+	b) DataAdapter.
+	c) Dataset.
+	d) Datareader.
+	e) ExecuteReader.
+	f) ExecuteNonQuery
+	g) SqlCommand
+	h) ExecuteScalar and so on.
+-----------------------------------------------------------
+N-Tier Application Core:-
+------------------------------
+CoreNTierAppDemo ->>> BAL -> DAL.
+CommonLayer.
+BusinessAccessLayer.
+DataAccessLayer.
+-------------------------------------
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=KAILASH;Initial Catalog=Batch12PM;Integrated Security=True;Encrypt=True;TrustServerCertificate=True;"
+  },
+  "AllowedHosts": "*"
+}
+-------------------------------
+Assignment Task:-
+------------------------
+1) DI.
+2) Type of services in DI.
+	i) Singleton. 
+	ii) Scoped.
+	iii) Transient.
+-------------------------------------------------
+sp_Employee 'SelectALL'
+
+
+ALTER proc sp_Employee
+(
+@myinput nvarchar(50),
+@id int=0,
+@name nvarchar(50)=null,
+@age int=0,
+@mobile nvarchar(50)=null,
+@post nvarchar(50)=null,
+@salary money=0
+)
+as begin
+if(@myinput='CREATE')
+begin
+insert into tblEmployee(ename,age,mobileno,post,salary) values(@name,@age,@mobile,@post,@salary)
+select 'Insert' as msg
+end
+else if(@myinput='Update')
+begin
+update tblEmployee set ename=@name,age=@age,mobileno=@mobile,post=@post,salary=@salary where eid=@id
+select 'Update' as msg
+end
+else if(@myinput='Delete')
+begin
+Delete from tblEmployee where eid=@id
+select 'Delete' as msg
+end
+else if(@myinput='SelectALL')
+begin
+select * from tblEmployee
+end
+else if(@myinput='Select_Single')
+begin
+select * from tblEmployee where eid=@id
+end
+end
+----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
