@@ -1,0 +1,118 @@
+HTML Helpers in MVC Core:-
+------------------------------
+a) Normal / Basic Html Helper.
+<form>
+<body>
+<head>
+<p>  etc.
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class HtmlHelperExController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(string txtName, int txtAge, string txtCity)
+        {
+            // Save record into database.
+            return View();
+        }
+    }
+}
+-------------------
+
+<h1>Basic / Normal HTML Helper </h1>
+<html>
+
+<body style="background-color:lightgreen;">
+
+    <form action="HtmlHelperEx/Create" method="post">
+
+    <label> Name: </label>
+    <input type="text" name="txtName" />
+
+    <label> Age: </label>
+    <input type="text" name="txtAge" />
+
+    <label> City: </label>
+    <input type="text" name="txtCity" />
+
+    <button type="submit"> Register </button>
+</form>
+</body>
+</html>
+------------------------------------
+b) Standard Html Helper.
+@Html.TextBox()
+@Html.CheckBox()
+@Html.RadioButton()
+@Html.BeginForm()
+@Html.DropDown()
+@Html.Password()
+@Html.Hidden() and many more etc...
+---------------------------------
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class HtmlHelperExController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(string name, int age, string city)
+        {
+            // Save record into database.
+            return View();
+        }
+    }
+}
+-------------------------------------
+
+<h1> Standard HTML Helper </h1>
+<style>
+    .kj
+    {
+        background-color:aquamarine;
+    }
+</style>
+
+@using (Html.BeginForm("Create", "HtmlHelperEx", FormMethod.Post))
+{
+
+    @Html.Label("Name")
+    @Html.TextBox("name",null,new { @class = "kj" })
+
+
+    @Html.Label("Age")
+    @Html.TextBox("age" ,null, new { @class = "kj" })
+
+    @Html.Label("City")
+    @Html.TextBox("city" ,null, new { @class = "kj" })
+
+    <button type="submit">Register</button>
+
+}
+---------------------------------------------------
+c) Strongly Typed Html Helper. -->> Pending..
+d) Tag Helper.
+----------------------------------------------------
