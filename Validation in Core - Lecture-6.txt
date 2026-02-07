@@ -1,0 +1,523 @@
+c) Strongly Typed Html Helper. 
+@Html.TextBoxFor()
+@Html.CheckBoxFor()
+@Html.RadioButtonFor()
+@Html.BeginForm()
+@Html.DropDownFor()
+@Html.PasswordFor()
+@Html.HiddenFor() and many more etc...
+--------------------------------------------------------------
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class HtmlHelperExController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Employee empObj)
+        {
+            // Save record into database.
+            return View();
+        }
+    }
+}
+------------------------------------
+@model Employee
+
+<h1> Strongly Typed HTML Helper </h1>
+<style>
+    .kj
+    {
+        background-color:aquamarine;
+    }
+</style>
+
+@using (Html.BeginForm("Create", "HtmlHelperEx", FormMethod.Post))
+{
+
+    @Html.LabelFor(m=>m.Eid)
+    @Html.TextBoxFor(m=>m.Eid) <br/>
+
+
+    @Html.LabelFor(m=>m.Ename)
+    @Html.TextBoxFor(m => m.Ename)
+    <br />
+
+    @Html.LabelFor(m => m.Age)
+    @Html.TextBoxFor(m => m.Age)
+    
+    <br />
+
+    @Html.LabelFor(m => m.Mobileno)
+    @Html.TextBoxFor(m => m.Mobileno)
+
+    <br />
+
+    @Html.LabelFor(m => m.Post)
+    @Html.TextBoxFor(m => m.Post)
+    <br />
+
+    @Html.LabelFor(m => m.Salary)
+    @Html.TextBoxFor(m => m.Salary)
+    
+    <br />
+
+    <button type="submit">Register</button>
+}
+------------------------------------------------
+namespace Batch12PMCore_03_01_26.Models
+{
+    public class Employee
+    {
+        public int Eid { get; set; }
+        public string Ename { get; set; }
+        public int Age { get; set; }
+        public string Mobileno { get; set; }
+        public string Post { get; set; }
+        public double Salary { get; set; }
+    }
+}
+---------------------------------------------------------------
+d) Tag Helper.
+>> It support in dot net core.
+>> The tag syntax in simple and fast in rendering.
+asp-for , asp-controller , asp-route , asp-validation etc.
+----------------------------------------------------------------
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class HtmlHelperExController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Employee empObj)
+        {
+            // Save record into database.
+            return RedirectToAction("showResult",empObj);
+        }
+        public IActionResult showResult(Employee empObj)
+        {
+            return View(empObj);
+        }
+    }
+}
+---------------------------
+@model Employee
+
+<h1>Employee Data </h1>
+
+<table class="table table-bordered">
+    <tr>
+        <th>EID</th>
+        <th>@Model.Eid</th>
+    </tr>
+    <tr>
+        <th>Employee Name</th>
+        <th>@Model.Ename</th>
+    </tr>
+    <tr>
+        <th>Age</th>
+        <th>@Model.Age</th>
+    </tr>
+    <tr>
+        <th>Mobile No</th>
+        <th>@Model.Mobileno</th>
+    </tr>
+    <tr>
+        <th>POST</th>
+        <th>@Model.Post</th>
+    </tr>
+    <tr>
+        <th>Salary</th>
+        <th>@Model.Salary</th>
+    </tr>
+</table>
+--------------------------------------------------
+@model Employee
+
+<form method="post" asp-asp-controller="HtmlHelper" asp-action="Create">
+    <label asp-for="Eid">Eid </label>
+    <input type="text" asp-for="Eid"/> <br/>
+
+    <label asp-for="Ename">Name </label>
+    <input type="text" asp-for="Ename" /> <br />
+
+    <label asp-for="Age">Age </label>
+    <input type="text" asp-for="Age" /> <br />
+
+    <label asp-for="Mobileno">Mobile No </label>
+    <input type="text" asp-for="Mobileno" /> <br />
+
+    <label asp-for="Post">Post </label>
+    <input type="text" asp-for="Post" /> <br />
+
+    <label asp-for="Salary">Salary </label>
+    <input type="text" asp-for="Salary" />  <br />
+
+    <button type="submit">Register</button>
+
+</form>
+-------------------------------------------------------------
+Validation in Dot Net core:-
+-----------------------------------------------
+>> Validation check all the necessary condition that must be full filled before submitting data to the server.
+Types of Validation:-
+There are two types of validation:-
+a) Client side validation.
+>> Check all the validations are defined into this namespace -  
+"using System.ComponentModel.DataAnnotations;"
+>> condition before sending data to the server.
+b) Server side validation.
+>> After submitting data to the server, server check all the necessary condition which is filled by the user is correct or not.
+-------------------------------------------------------
+using Microsoft.AspNetCore.Mvc;
+using Batch3PMWECORE.Models;
+namespace Batch3PMWECORE.Controllers
+{
+    public class ValidationExController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Register() => View();
+
+        [HttpPost]
+        public IActionResult Register(Employee empObj)
+        {
+            if(ModelState.IsValid)  // Server Side Validation.
+            {
+
+            }
+            else
+            {
+
+            }
+            return View();
+        }
+    }
+}
+-------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+
+namespace Batch12PMMohit.Models
+{
+    public class Validation
+    {
+        [Key]
+        public int Eid { get; set; }
+        
+        [Required(ErrorMessage ="Enter Your Name!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use Character only please!")]
+        public string ?Name { get; set; }
+        
+        [Required(ErrorMessage ="Enter Your Age!")]
+        [StringLength(2, ErrorMessage = "Max 2 digits")]
+        [RegularExpression("([0-9]+)", ErrorMessage = "Use Number only please!")]
+        public string ?Age { get; set; }
+        
+        [Required(ErrorMessage ="Enter your City!")]
+        public string ?City { get; set; }
+        
+        [Required(ErrorMessage ="Enter Your Mobile!")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Enter 10 Digit Only!!")]
+        public string ?Mobile { get; set; }
+        
+        [Required(ErrorMessage ="Enter Your Email!")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
+        public string ?Email { get; set; }
+
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage ="Enter your Password!")]
+        [RegularExpression("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",ErrorMessage = "Minimum eight characters, at least one letter, one number and one special character")]
+        public string ?Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage ="Password and Confirm Password doesn't Match!")]
+        [Compare("Password")]
+        public string ?ConfirmPassword { get; set; }
+    }
+}
+--------------------------------------------------------------------------------
+@model Validation
+
+<form asp-action="Create" asp-controller="ValidationEx" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div>
+    <label>Enter Name:</label>
+    <input type="text" asp-for="Name"/>
+    <span asp-validation-for="Name" class="text-danger"></span> 
+</div>
+
+    <div>
+    <label>Enter Age:</label>
+    <input type="text" asp-for="Age" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+
+    <div>
+    <label>Enter City:</label>
+    <input type="text" asp-for="City" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+
+    <div>
+    <label>Enter Mobile:</label>
+    <input type="text" asp-for="Mobile" />
+        <span asp-validation-for="Mobile" class="text-danger"></span>
+    </div>
+
+    <div>
+    <label>Enter Email:</label>
+    <input type="text" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+    <label>Enter Password:</label>
+    <input type="text" asp-for="Password"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+    <label>Confirm Password:</label>
+    <input type="text" asp-for="ConfirmPassword"/>
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div>
+    <button type="submit" class="btn btn-warning">Register</button>
+    </div>
+</form>
+----------------------------------------------------
+Client Side Validation:-
+---------------------------------------
+>> _ValidationScriptsPartial.cshtml -> if you attach this file into your .cshtml then it behave like client side validation in your application.
+There are two ways to call this file in your page-
+a) 
+@section Scripts
+{
+<partial name="_ValidationScriptsPartial"/>
+}
+b)
+@section Scripts {
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+-----------------------------------------------------------------------
+using Batch10AMCoree.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection;
+
+namespace Batch10AMCoree.Controllers
+{
+    public class ValidationExController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Register()
+        {
+            var customer = new Customer
+            {
+                Cities = GetCities()
+            };
+            return View(customer);
+        }
+        private List<SelectListItem> GetCities()
+        {
+        return new List<SelectListItem>
+        {
+        new SelectListItem { Text = "-- Select City --", Value = "0" },
+        new SelectListItem { Text = "Mumbai", Value = "1" },
+        new SelectListItem { Text = "Delhi", Value = "2" },
+        new SelectListItem { Text = "Bangalore", Value = "3" },
+         new SelectListItem { Text = "Gujrat", Value = "4" },
+          new SelectListItem { Text = "Chennai", Value = "5" }
+        };
+        }
+
+        [HttpPost]
+        public IActionResult Register(Customer cusObj)
+        {
+            cusObj.Cities = GetCities();
+            if (ModelState.IsValid)  // Server Side Validation
+            {
+                //Save Record into Database.
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Error in Customer Model!!!");
+            }
+            return View(cusObj);
+        }
+    }
+}
+----------------------
+@model Customer
+
+<form asp-action="Register" asp-controller="ValidationEx" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div>
+        <label>Enter Name:</label>
+        <input type="text" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Enter Age:</label>
+        <input type="text" asp-for="Age" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Select City:</label>
+        <select asp-for="CityId" asp-items="Model.Cities">
+        </select>
+        <span asp-validation-for="CityId" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Enter Mobile:</label>
+        <input type="text" asp-for="Mobile" />
+        <span asp-validation-for="Mobile" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Enter Email:</label>
+        <input type="text" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Enter Password:</label>
+        <input type="password" asp-for="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label>Confirm Password:</label>
+        <input type="password" asp-for="ConfirmPassword" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-warning">Register</button>
+    </div>
+</form>
+
+@* @section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
+ *@
+
+@section Scripts {
+    { await @Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
+--------------------------------------------------------------------------
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+
+namespace Batch10AMCoree.Models
+{
+    public class Customer
+    {
+        [Key]
+        public int Eid { get; set; }
+
+        [Required(ErrorMessage = "Enter Your Name!")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use Character only please!")]
+        public string? Name { get; set; }
+
+        [Required(ErrorMessage = "Enter Your Age!")]
+        [StringLength(2, ErrorMessage = "Max 2 digits")]
+        [RegularExpression("([0-9]+)", ErrorMessage = "Use Number only please!")]
+        public string? Age { get; set; }
+
+        [Required(ErrorMessage = "City is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a city.")]
+        public int CityId { get; set; }
+        public List<SelectListItem> Cities { get; set; }
+
+        [Required(ErrorMessage = "Enter Your Mobile!")]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Enter 10 Digit Only!!")]
+        public string? Mobile { get; set; }
+
+        [Required(ErrorMessage = "Enter Your Email!")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
+        public string? Email { get; set; }
+
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Enter your Password!")]
+        [RegularExpression("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", ErrorMessage = "Minimum eight characters, at least one letter, one number and one special character")]
+        public string? Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password and Confirm Password doesn't Match!")]
+        [Compare("Password")]
+        public string? ConfirmPassword { get; set; }
+    }
+}
+---------------------------------------------------------
+Cascading Dropdown:-
+---------------------------
+Country_id  Country_name
+---------------------------------
+State_id StateName Cid
+---------------------------------
+city_id city_name  sid
+---------------------------------
+Entity Framework in Core:- Pending.
+---------------------------------
+a) Code First Approach.
+b) Database First Approach.
+--------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
