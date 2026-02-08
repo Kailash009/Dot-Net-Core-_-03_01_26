@@ -1,0 +1,277 @@
+Entity Framework in Core:-
+--------------------------------
+>> EF is an ORM [Object relational Mapping].
+>> In EF we write Lambda Expression.
+>> Lambda expression generally as compare to sql queries.
+>> EF save time and cost of software product.
+>> EF developer directly interact with databases.
+>> No need to write sql boaring queries.
+-------------------------------------------------------------
+There are two approaches :-
+----------------------------------
+a) Code First Approach.
+>> In CFA , there is a model and we map all the models with databases.
+-------------------
+Steps of CFA:-
+--------------------
+a) Install Packages.
+i) Microsoft.EntityFrameworkCore
+ii) Microsoft.EntityFrameworkCore.SqlServer
+iii) Microsoft.EntityFrameworkCore.Tools
+--------------------------------------------------------- 
+b) Now Create Model:-
+using System.ComponentModel.DataAnnotations;
+
+namespace CodeFirstApproachDemoBatch12PM.Models
+{
+    public class Employee
+    {
+        [Key]
+        public int Eid { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string MobileNo { get; set; }
+        public string Post { get; set; }
+        public double Salary { get; set; }
+    }
+}
+c) Now Create Context Class.
+using Microsoft.EntityFrameworkCore;
+
+namespace CodeFirstApproachDemoBatch12PM.Models
+{
+    public class EmployeeDbContext:DbContext
+    {
+        public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options):base(options)
+        {
+            
+        }
+        public DbSet<Employee> Employees { get; set; } // All CRUD operation
+    }
+}
+d) Make Connection String:- appsettings.json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnectionString": "Data Source=KAILASH;Initial Catalog=DbCodeFirst;Integrated Security=True;TrustServerCertificate=True;Encrypt=True';"
+  },
+  "AllowedHosts": "*"
+}
+e) Now add Context Class in Middleware to provide Connection String [Program.cs]
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<EmployeeDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+});
+f) Now perform Migration Command:- [package Manager Console]
+	i) add-migration 'anyMigrationname'
+>> This command see all your model classes and generate ORM queries.
+	ii) update-database
+>> This command get all your ORM Query and create database and tables in your databases.
+--------------------------------------------------------------------------------------
+Assignment Task:- 
+---------------------
+isDel bit
+-------------
+Note:- SoftDelete.
+-----------------------
+using CodeFirstApproachDemoBatch12PM.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace CodeFirstApproachDemoBatch12PM.Controllers
+{
+    public class EmployeeController : Controller
+    {
+        private readonly EmployeeDbContext _dbEmp;
+        public EmployeeController(EmployeeDbContext dbEmp)
+        {
+            _dbEmp = dbEmp;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var employees = await _dbEmp.Employees.ToListAsync();
+            return View(employees);
+        }
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Employee empObj)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbEmp.Employees.Add(empObj);
+                int n = await _dbEmp.SaveChangesAsync();
+                if (n != 0)
+                {
+                    TempData["insert"] = "<script>alert('Record Inserted!!');</script>";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["insert"] = "<script>alert('Record Failed!!');</script>";
+
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Error in Employee Model!!");
+            }
+            return View();
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var employee = await _dbEmp.Employees.Where(m => m.Eid == id).FirstOrDefaultAsync();
+            return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Employee empObj)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbEmp.Entry(empObj).State = EntityState.Modified;
+                int n = await _dbEmp.SaveChangesAsync();
+                if (n != 0)
+                {
+                    TempData["update"] = "<script>alert('Record Updated!!');</script>";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["update"] = "<script>alert('Record Failed!!');</script>";
+
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Error in Employee Model!!");
+            }
+            return View();
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var employee = await _dbEmp.Employees.Where(m => m.Eid == id).FirstOrDefaultAsync();
+            return View(employee);
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var employee = await _dbEmp.Employees.Where(m => m.Eid == id).FirstOrDefaultAsync();
+            if (employee != null)
+            {
+                _dbEmp.Employees.Remove(employee);
+                int n = await _dbEmp.SaveChangesAsync();
+                if (n != 0)
+                {
+                    TempData["delete"] = "<script>alert('Record Deleted!!');</script>";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["delete"] = "<script>alert('Record Failed!!');</script>";
+
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Error in Employee Model!!");
+            }
+            return View();
+        }
+    }
+}
+---------------------------------------
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CodeFirstApproachDemoBatch12PM.Models
+{
+    [Table("tblEmployee")]
+    public class Employee
+    {
+        [Key]
+        public int Eid { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string MobileNo { get; set; }
+        public string Post { get; set; }
+        public double Salary { get; set; }       
+    }
+}
+--------------------------------------------
+using Microsoft.EntityFrameworkCore;
+
+namespace CodeFirstApproachDemoBatch12PM.Models
+{
+    public class EmployeeDbContext:DbContext
+    {
+        public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options):base(options)
+        {
+            
+        }
+        public DbSet<Employee> Employees { get; set; } // All CRUD operation
+    }
+}
+----------------------------------------
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnectionString": "Data Source=KAILASH;Initial Catalog=DbCodeFirst;Integrated Security=True;TrustServerCertificate=True;Encrypt=True;"
+  },
+  "AllowedHosts": "*"
+}
+--------------------
+using CodeFirstApproachDemoBatch12PM.Models;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<EmployeeDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+});
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapStaticAssets();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Employee}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
+
+app.Run();
+-----------------------------------------------------
+
+
+b) Database First Approach. -- Pending
+-----------------------------------------------
