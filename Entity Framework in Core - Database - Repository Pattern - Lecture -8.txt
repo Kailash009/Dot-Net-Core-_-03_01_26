@@ -1,0 +1,57 @@
+b) Database First Approach in Dot Net Core:-
+-------------------------------------------------
+>> In DFA , first we create database and tables , according to our tables it automatically create model classes , context classes and connectionString.
+------------------------------------
+Steps:-
+------------
+1. Go to sql server and create database and tables.
+2. Install Packages:-
+	a) Microsoft.EntityFrameworkCore
+	b) Microsoft.EntityFrameworkCore.SqlServer
+	c) Microsoft.EntityFrameworkCore.Tools
+3. Now Run Migration Command.
+Syntax:-
+---------------
+Scaffold-DbContext "server=servername;database=databasename;trusted_connection=True;Encrypt=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -Context EmployeeDbContext -outputDir Models
+-------------------------------------------------
+PM> Scaffold-DbContext "server=KAILASH;database=DbDatabaseFirst;trusted_connection=True;Encrypt=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -Context EmployeeDbContext -outputDir Models
+------------------------------------------------------------------
+Repository Pattern in Dot Net Core:-
+---------------------------------------------
+>> Till now , our BAL directly interact with DAL. This is not a good approach.
+>> Then we introduce the concept of Repository pattern. With this concept , there is a 
+repository between BAL and DAL.
+>> It is a design pattern that creates an abstraction layer between an application's business logic and its data access logic. 
+-----------------------------------------------------------
+Implementation of Repository Pattern using CFA:-
+------------------------------------------------------
+Generic Repository Pattern -- Pending
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
