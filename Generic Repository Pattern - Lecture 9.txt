@@ -1,0 +1,43 @@
+Generic Repository Pattern in dot net core:-
+------------------------------------------------
+As we already discussed, in a Basic Repository or Non-Generic Repository, we need to create separate repositories for every entity in our application. For example, if we have three entities, Employee, Product, and Customer, we need to create three repositories: EmployeeRepository, ProductRepository, and CustomerRepository.
+This is boring and repetitive work, especially if all the repositories will do the same kind of work (i.e., typically database CRUD operations). This is against the DRY (Don’t Repeat Yourself) principle, as we are repeating the same code again and again in each repository. To solve the above problem, the Generic Repository Design Pattern comes into the picture. 
+Implementation of Generic Repository Pattern in core using CFA:-
+--------------------------------------------------------------------
+Area in dot net core:-
+----------------------------
+>> Area is a feature that allows you to organize a large application into smaller functional sections.
+>> It helps divide a big MVC project into multiple mini-MVC structures.
+Each Area has its own:
+Models
+Views
+Controllers
+>> This improves maintainability and scalability.
+Areas are mainly used when:
+The application is large
+Multiple teams are working on different modules
+We want logical separation of features
+Admin and User modules need separation
+Example:
+User Module
+Admin Module
+HR Module
+Sales Module
+Inventory Module
+Marketing Module
+>> Instead of keeping all controllers in one folder, we organize them into Areas.
+-----------------------------------------------------
+Pending Topics:-
+--------------------
+a) Rest API.
+b) Authentication and Authorization:
+	i) Identity.
+	ii) Cookie Based Authentication.
+	iii) JWT Tokens.
+c) Filters in core.
+d) Implement ajax in core.
+e) Project Development.
+=========================================================
+
+
+ 
