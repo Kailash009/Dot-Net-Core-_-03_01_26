@@ -1,0 +1,134 @@
+Pending Topics:-
+--------------------
+a) RestFul API.
+----------------------
+API :-
+--------------
+>> It stands for Application programming Interface.
+>> It is neither a programming language nor a framework , It is a concept by which you can communication having different environments /Programming Language.
+REST:-
+>> It stands for 'Representational State Transfer'.
+>> Rest is a communication protocol , under which our api will run.
+-----------------------------------------------------------------------
+we need to follow three steps in API:-
+a) How to create an API.
+b) Testing an API.  -->> POSTMAN , Swagger.
+c) How to consume an API.
+--------------------------------------------------
+httpVerb:
+---------------
+GET  ->> Read
+POST  ->> Create
+PUT  ->> Update
+DELETE  -> Delete
+-------------------------------------------------
+Implementation of API in core using CFA:-
+-------------------------------------------------
+https://jsonlint.com/  => to check json is valid or not.
+{
+"name":"ravi",
+"age":20,
+"address":"noida"
+}  =>> JSON Format.
+--------------------------------
+
+[
+  {
+    "date": "2026-02-22",
+    "temperatureC": -3,
+    "temperatureF": 27,
+    "summary": "Cool"
+  },
+  {
+    "date": "2026-02-23",
+    "temperatureC": 26,
+    "temperatureF": 78,
+    "summary": "Scorching"
+  },
+  {
+    "date": "2026-02-24",
+    "temperatureC": -5,
+    "temperatureF": 24,
+    "summary": "Sweltering"
+  },
+  {
+    "date": "2026-02-25",
+    "temperatureC": 44,
+    "temperatureF": 111,
+    "summary": "Hot"
+  },
+  {
+    "date": "2026-02-26",
+    "temperatureC": 15,
+    "temperatureF": 58,
+    "summary": "Balmy"
+  }
+]  =>> JSON FORMAT.
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace MyFIrstCoreAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmployeeController : ControllerBase
+    {
+        [Route("First")]
+        [HttpGet]
+        public string Testing()
+        {
+            return "Employee API is running Fine!!";
+        }
+    }
+}
+------------------------------------------
+[
+  {
+    "eid": 1,
+    "name": "subham",
+    "age": 23,
+    "mobileNumber": "8898991",
+    "post": "SE",
+    "salary": 848443.34
+  },
+  {
+    "eid": 2,
+    "name": "ravi vasney",
+    "age": 29,
+    "mobileNumber": "89838913",
+    "post": "TL",
+    "salary": 84853.34
+  }
+]
+---------------------------------------------------
+{
+  "statusCode": 302,
+  "message": "Record Found!!",
+  "data": [
+    {
+      "eid": 1,
+      "name": "subham",
+      "age": 23,
+      "mobileNumber": "8898991",
+      "post": "SE",
+      "salary": 848443.34
+    },
+    {
+      "eid": 2,
+      "name": "ravi vasney",
+      "age": 29,
+      "mobileNumber": "89838913",
+      "post": "TL",
+      "salary": 84853.34
+    }
+  ]
+}
+------------------------------------------
+b) Authentication and Authorization:
+	i) Identity.
+	ii) Cookie Based Authentication.
+	iii) JWT Tokens.
+c) Filters in core.
+d) Implement ajax in core.
+e) Project Development.
+----------------------------------------------
