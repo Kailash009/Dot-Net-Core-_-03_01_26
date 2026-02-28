@@ -1,0 +1,64 @@
+Dot Net Core:-
+--------------------
+b) Filters in core.
+c) Implement ajax in core.
+d) Project Development.
+----------------------------------------------
+a) Authentication and Authorization:-
+Authentication:-
+>> To check the identity of a user whether the user is valid or not.
+Authorization:-
+>> To give the access or privilege to the user.
+---------------------------------------------------------------
+	i) Implement Identity in core
+	ii) Cookie Based Authentication.
+		a) Identity.
+		b) Claim.
+		c) Principal.
+---------------------------------------------------------
+	iii) JWT Tokens.
+>> JWT stands for JSON Web Token.
+>> JSON stands for Java Script Object Notation.
+>> JSON Web Token (JWT) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.
+>> Although JWTs can be encrypted to also provide secrecy between parties, we will focus on signed tokens. Signed tokens can verify the integrity of the claims contained within it, while encrypted tokens hide those claims from other parties. When tokens are signed using public/private key pairs, the signature also certifies that only the party holding the private key is the one that signed it.
+-------------------------------------------------------
+It consist of three parts:-
+a) Header.
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+b) Payload.
+The second part of the token is the payload, which contains the claims.
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true
+}
+c) Signature.
+To create the signature part you have to take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret)
+-----------------------------------------------------------
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.
+KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
+--------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
