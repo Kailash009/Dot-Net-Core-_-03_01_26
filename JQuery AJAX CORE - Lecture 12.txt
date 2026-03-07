@@ -1,0 +1,181 @@
+Dot Net Core:- 
+----------------------------------------
+a) Filters in Core.
+>> >> Filter is used to perform some operations before or after action Method Execution.
+Types of Filters:-
+----------------------
+a) Authorization Filters: These run first in the pipeline to determine if a user is authorized for the request. If authorization fails, the filter can short-circuit the request immediately.
+b) Resource Filters: Running after authorization but before model binding, these wrap the rest of the pipeline. They are ideal for "outer-layer" tasks like caching or measuring total request performance.
+c) Action Filters: These execute immediately before and after a controller action method is called. They can be used to manipulate input arguments, validate model state, or log action-specific metadata. (Note: These are not supported in Razor Pages; use IPageFilter instead).
+d) Exception Filters: These are triggered only when an unhandled exception occurs during action execution or result rendering. They are used for centralized error logging and returning friendly error responses.
+e) Result Filters: These run before and after the execution of the action result (e.g., before JSON is written to the response or a view is rendered). They are often used to add custom HTTP headers or wrap responses in a standard format. 
+=====================================================================
+Action Filter:-
+--------------------
+i)  OnMethodExecuting -> It runs before action method execution.
+ii) OnMethodExecuted -> It runs after action method execution.
+using Microsoft.AspNetCore.Mvc.Filters;
+
+namespace Batch12PMCore_03_01_26.Filters
+{
+    public class CustomActionFilter : IActionFilter
+    {
+        public void OnActionExecuting(ActionExecutingContext context)
+        {
+            // Before Action Method...
+           
+        }
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+            // After Action Method...
+            
+        }
+    }
+}
+------------------------
+Add filter in Program.cs [Middleware]
+--------------------------------------------
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(new CustomActionFilter());
+});
+--------------------------------------------------------
+Assignment Task:-
+-------------------------
+1. Perform CRUD operation in dotnet core using JQuery.
+-----------------------------------------------------------------
+b) Implement jQuery ajax in core.
+$(document).ready(function(){   // Anonymous Function
+alert('Hello');
+});
+or
+$(function(){
+);
+----------------------------------------------
+<script type="text/javascript">
+$(document).ready(function(){   // Anonymous Function
+$('button').click(function(){
+var name=$('#txtName').val();
+alert(name);
+$('label').html('Hello! My Name is '+ name);
+});
+});
+</script>
+<input type="text" id="txtName"/>
+<button>Click Me!!</button>
+<label style="color:red;font-size:50px;"></label>
+-----------------------------------------------------
+using Batch12PMCore_03_01_26.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Batch12PMCore_03_01_26.Controllers
+{
+    public class JqueryExampleController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetEmployee(string name, int age, string address)
+        {
+            EmployeeData emp = new EmployeeData
+            {
+                name = name,
+                age = age,
+                address = address,
+                datetime = DateTime.Now.ToString()
+            };
+            return Json(emp);
+        }
+
+    }
+}
+-------------------------------------
+<h1>Jquery Demo </h1>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Ajax-JQuery Implementation</title>
+</head>
+<body>
+    Enter Name
+    <input type="text" id="txtName" />
+    <br />
+    Enter Age
+    <input type="text" id="txtAge" />
+    <br />
+    Enter Address
+    <input type="text" id="txtAddress" />
+    <br />
+    <input type="button" id="btnGet" value="Show Detail" />
+    <br />
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#myhead').hide();
+            $('#employeeTable').hide();
+            $("#btnGet").click(function () {
+                debugger;
+                 $('#myhead').show();
+                 $('#employeeTable').show();
+                var data = {};  // Empty Dictionary
+                $.ajax({
+                    type: "POST",
+                    url: "/JqueryExample/GetEmployee",
+                    data: { "name": $("#txtName").val(), "age": $("#txtAge").val(), "address":$("#txtAddress").val() },  // Action Parameter
+                    success: function (response) {
+                        var row = "<tr>" +
+                         "<td>" + response.name + "</td>" +
+                         "<td>" + response.age + "</td>" +
+                        "<td>" + response.address + "</td>" +
+                         "<td>" + response.datetime + "</td>" +
+                        "</tr>";
+                        $("#employeeTable tbody").append(row);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    <br />
+    <h1 id="myhead" class="bg-black text-white text-center">Employee Data</h1>
+    <table class="table table-bordered" id="employeeTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+</html>
+------------------------------
+namespace Batch12PMCore_03_01_26.Models
+{
+    public class EmployeeData
+    {
+        public string? name { get; set; }
+        public int age { get; set; }
+        public string? address { get; set; }
+        public string? datetime { get; set; }
+    }
+}
+-----------------------------------------------------
+c) Project Development. -- Pending.
+------------------------------------------
+
+
+
+
+
